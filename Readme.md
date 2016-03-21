@@ -20,8 +20,6 @@ If you go to the original project and modify the code there, your changes will b
 
 # Examples
 
-To run examples/tests install Mocha `$ npm install -g mocha` and run `$ mocha you-file-name.js`:
-
 ## OAuth1.0
 
 ```javascript
