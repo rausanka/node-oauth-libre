@@ -22,32 +22,47 @@ If you go to the original project and modify the code there, your changes will b
 
 ## OAuth1.0
 
-```javascript
-describe('OAuth1.0',function(){
-  var OAuth = require('oauth');
+In this example we connect to the Twitter API and use OAuth 1.0 to login and authorize our client. This example works for a single user and requires that you create a Twitter app and authorize your user and fill in the `consumerKey`, `consumerSecret`, `accessToken`, and the `accessTokenSecret` ([find out more about on Twitter's dev docs](https://dev.twitter.com/oauth/overview/application-owner-access-tokens)):
 
-  it('tests trends Twitter API v1.1',function(done){
-    var oauth = new OAuth.OAuth(
-      'https://api.twitter.com/oauth/request_token',
-      'https://api.twitter.com/oauth/access_token',
-      'your application consumer key',
-      'your application secret',
-      '1.0A',
-      null,
-      'HMAC-SHA1'
-    );
-    oauth.get(
-      'https://api.twitter.com/1.1/trends/place.json?id=23424977',
-      'your user token for this app', //test user token
-      'your user secret for this app', //test user secret
-      function (e, data, res){
-        if (e) console.error(e);
-        console.log(require('util').inspect(data));
-        done();
-      });
-  });
+```js
+var OAuth = require('oauth').OAuth;
+
+// Setting up the OAuth client
+var requestUrl = 'https://api.twitter.com/oauth/request_token';
+var accessUrl = 'https://api.twitter.com/oauth/access_token';
+var version = '1.0';
+var authorizeCallback = 'oob';
+var signatureMethod = 'HMAC-SHA1';
+var nonceSize = null;
+var customHeaders = null;
+
+var consumerKey = 'your consumer key goes here';
+var consumerSecret = 'your consumer secret goes here';
+
+var client = new OAuth(
+  requestUrl, accessUrl,
+  consumerKey, consumerSecret,
+  version,
+  authorizeCallback,
+  signatureMethod,
+  nonceSize,
+  customHeaders
+);
+
+// Making a request to the API
+var url = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+
+var accessToken = 'your access token goes here';
+var accessTokenSecret = 'your access token secret goes here';
+
+client.get(url, accessToken, accessTokenSecret, function(err, data, response) {
+  if (err) {
+    console.log('Error: ' + error);
+  } else {
+    console.log('Data: ' + data);
+    console.log('Response: ' + response);
+  }
 });
-```
 
 ## OAuth2.0
 
