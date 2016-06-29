@@ -203,7 +203,11 @@ function jsonParse(data) {
 <ul>
 <li>Github: <code>examples/github-example.js</code>
 </li>
+<li>Twitter: <code>examples/twitter-example.js</code>
+</li>
 </ul>
+
+<p>The Google example was removed due to the need for a custom Google-specific OAuth2 library for authentication.</p>
 
 <h3>
 <a id="example-authentication-with-github" class="anchor" href="#example-authentication-with-github" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example: Authentication with Github</h3>
@@ -223,8 +227,47 @@ function jsonParse(data) {
 </li>
 <li>Click the link that says "Get Code"</li>
 <li>Login to Github and authorize the application</li>
-<li>You will be returned to <code>http://localhost:8080/code</code> and should see the access token, on the command-line you will see something like "Obtained access_token: ..."
-# Change History</li>
+<li>You will be returned to <code>http://localhost:8080/code</code> and should see the access token, on the command-line you will see something like "Obtained access_token: ..."</li>
+</ol>
+
+<h3>
+<a id="example-authentication-with-google" class="anchor" href="#example-authentication-with-google" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example: Authentication with Google</h3>
+
+<p><em>Note: This example has been removed because Google needs a custom OAuth2 client library: <a href="https://github.com/google/google-auth-library-nodejs">https://github.com/google/google-auth-library-nodejs</a></em></p>
+
+<h3>
+<a id="example-authentication-with-twitter" class="anchor" href="#example-authentication-with-twitter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example: Authentication with Twitter</h3>
+
+<ol>
+<li>Create a Twitter account</li>
+<li>Create a new Developer Application <a href="https://apps.twitter.com/">https://apps.twitter.com/</a> &gt; Create New App</li>
+<li>Fill in the Callback URL with <code>http://127.0.0.1:8080/callback</code>
+</li>
+<li>Copy the Consumer Key (API Key) into <code>examples/twitter-example.js</code> where it says <code>clientID</code>
+</li>
+<li>Copy the Consumer Secret (API Secret) into <code>examples/twitter-example.js</code> where it says <code>clientSecret</code>
+</li>
+<li>Run the web server: <code>node examples/twitter-example.js</code>
+</li>
+<li>Open the website: <code>http://localhost:8080/</code>
+</li>
+<li>Login to Twitter and authorize the application</li>
+<li>You will be returned to <code>http://localhost:8080/code</code> and should see some results from the response on the command-line</li>
+</ol>
+
+<h1>
+<a id="change-history" class="anchor" href="#change-history" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change History</h1>
+
+<ul>
+<li>0.9.15
+
+<ul>
+<li>Promises for OAuth1 and OAuth2 with multiArgs</li>
+<li>PATCH support for OAuth1 and OAuth2</li>
+<li>GPLv3+ licensing</li>
+<li>Code examples updated, tested and working</li>
+</ul>
+</li>
 <li>0.9.14
 
 <ul>
@@ -410,7 +453,7 @@ function jsonParse(data) {
 <li>OAuth1/2: Introduces support for HTTPS end points and callback URLS for OAuth 1.0A and Oauth 2 (Please be aware that this was a breaking change to the constructor arguments order)</li>
 </ul>
 </li>
-</ol>
+</ul>
 
 <h1>
 <a id="contributors-in-first-name-alphabetical-order" class="anchor" href="#contributors-in-first-name-alphabetical-order" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributors (In first-name alphabetical order)</h1>
