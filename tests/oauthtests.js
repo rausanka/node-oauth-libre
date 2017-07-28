@@ -350,11 +350,37 @@ vows.describe('OAuth').addBatch({
           }
         }
       },
-      'Setting content-type on OAuth object should set content-type on request to value passed to setContentType': function (oa) {
-        var op = oa._createClient;
-        var opContentType = oa._contentType;
+      'Passing "Content-Type" header to constructor should set _defaultContentType': function (){
         var expectedContentType = 'application/json';
-        oa.setContentType(expectedContentType);
+        var oa = new OAuth("http://foo.com/RequestToken",
+          "http://foo.com/AccessToken",
+          "anonymous",  "anonymous",
+          "1.0A", "http://foo.com/callback", "HMAC-SHA1", 32, {"Content-Type": expectedContentType});
+        assert.equal(oa._defaultContentType, expectedContentType);
+      },
+      'Passing "Content-Type" header to constructor should not override contentType explicitly passed to _performSecureRequest': function (){
+        var initialContentType = 'application/json';
+        var expectedContentType = 'text/plain';
+        var oa = new OAuth("http://foo.com/RequestToken",
+          "http://foo.com/AccessToken",
+          "anonymous",  "anonymous",
+          "1.0A", "http://foo.com/callback", "HMAC-SHA1", 32, {"Content-Type": initialContentType});
+        var createClientHeaders = null;
+        oa._createClient = function (port, hostname, method, path, headers, sshEnabled) {
+          createClientHeaders = headers;
+          return {
+            write: function (post_body) {
+            }
+          };
+        };
+        oa._performSecureRequest("token", "token_secret", 'POST', 'http://foo.com/protected_resource', {"scope": "foobar,1,2"}, '', expectedContentType);
+        assert.equal(createClientHeaders['Content-Type'], expectedContentType);
+      },
+      'Setting content-type on OAuth object should set content-type on request to value passed to setDefaultContentType': function (oa) {
+        var op = oa._createClient;
+        var opContentType = oa._defaultContentType;
+        var expectedContentType = 'application/json';
+        oa.setDefaultContentType(expectedContentType);
         var createClientHeaders = null;
         try {
           oa._createClient = function (port, hostname, method, path, headers, sshEnabled) {
@@ -369,7 +395,7 @@ vows.describe('OAuth').addBatch({
         }
         finally {
           oa._createClient = op;
-          oa._contentType = opContentType;
+          oa._defaultContentType = opContentType;
         }
       },
       'Not setting content-type on OAuth object should set content-type on request to application/x-www-form-urlencoded': function (oa) {
@@ -387,7 +413,7 @@ vows.describe('OAuth').addBatch({
           assert.equal(createClientHeaders['Content-Type'], 'application/x-www-form-urlencoded');
         }
         finally {
-          oa.setContentType(null);
+          oa.setDefaultContentType(null);
           oa._createClient = op;
         }
       }
